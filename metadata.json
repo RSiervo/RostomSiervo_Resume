@@ -1,0 +1,8 @@
+{
+  "name": "ProRes AI - Interactive Smart Resume",
+  "description": "A high-end, professional interactive resume with a built-in Gemini-powered career assistant that answers specific questions about skills, experience, and projects.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}

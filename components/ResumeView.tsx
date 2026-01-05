@@ -8,6 +8,7 @@ interface ResumeViewProps {
 
 export const ResumeView: React.FC<ResumeViewProps> = ({ data }) => {
   const [activeFilter, setActiveFilter] = useState<'All' | 'Oracle' | 'IT'>('All');
+  const [visibleReferences, setVisibleReferences] = useState<Set<number>>(new Set());
   
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {
@@ -21,6 +22,16 @@ export const ResumeView: React.FC<ResumeViewProps> = ({ data }) => {
     document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
     return () => observer.disconnect();
   }, []);
+
+  const toggleReference = (idx: number) => {
+    const next = new Set(visibleReferences);
+    if (next.has(idx)) {
+      next.delete(idx);
+    } else {
+      next.add(idx);
+    }
+    setVisibleReferences(next);
+  };
 
   const filteredCerts = data.certifications.filter(cert => {
     if (activeFilter === 'All') return true;
@@ -41,7 +52,7 @@ export const ResumeView: React.FC<ResumeViewProps> = ({ data }) => {
 
   return (
     <div className="max-w-5xl mx-auto space-y-8 pb-20 print:pb-0 print:space-y-0">
-      {/* Top Banner / Insights - UPDATED FOR DARK MODE */}
+      {/* Top Banner / Insights */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 no-print">
         {insights.map((insight, i) => (
           <div key={i} className={`p-4 rounded-2xl border shadow-sm flex flex-col items-center text-center animate-in fade-in slide-in-from-top duration-500 delay-${i * 100} ${insight.color}`}>
@@ -72,48 +83,46 @@ export const ResumeView: React.FC<ResumeViewProps> = ({ data }) => {
                 </div>
               )}
               
-              <div className="flex-1 text-center sm:text-left">
-                {/* Name on one line */}
-                <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-slate-900 tracking-tight mb-2 whitespace-nowrap overflow-hidden print:text-3xl print:mb-1">
+              <div className="flex-1 text-center sm:text-left min-w-0">
+                <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-slate-900 tracking-tight mb-2 whitespace-nowrap overflow-hidden text-ellipsis print:text-3xl print:mb-1">
                   {data.name}
                 </h1>
                 
-                {/* Designation */}
                 <div className="mb-6 print:mb-3">
                   <span className="px-4 py-1.5 bg-blue-600 text-white text-sm font-bold rounded-full uppercase tracking-widest shadow-lg print:shadow-none print:text-[10px] print:px-2 print:py-0.5 print:bg-slate-100 print:text-slate-800 print:border print:border-slate-200">
                     {data.title}
                   </span>
                 </div>
 
-                {/* Contact Information */}
+                {/* Clickable Contact Information - Grid optimized for 1 line only */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-y-3 gap-x-10 text-sm font-semibold print:text-[10px] print:grid-cols-2 print:gap-y-1 print:gap-x-4">
-                  <div className="flex items-center gap-3 text-slate-600 print:text-black group">
-                    <div className="p-2 rounded-xl bg-slate-50 border border-slate-100 no-print">
+                  <a href={`mailto:${data.email}`} className="flex items-center gap-3 text-slate-600 hover:text-blue-600 transition-colors print:text-black group min-w-0">
+                    <div className="p-2 rounded-xl bg-slate-50 border border-slate-100 group-hover:bg-blue-50 group-hover:border-blue-200 transition-all no-print shrink-0">
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
                     </div>
-                    <span className="print:font-bold whitespace-nowrap">Email: <span className="font-normal">{data.email}</span></span>
-                  </div>
+                    <span className="print:font-bold whitespace-nowrap truncate">Email: <span className="font-normal underline decoration-blue-200 print:no-underline">{data.email}</span></span>
+                  </a>
                   
-                  <div className="flex items-center gap-3 text-slate-600 print:text-black group">
-                    <div className="p-2 rounded-xl bg-slate-50 border border-slate-100 no-print">
+                  <a href={`tel:${data.phone.replace(/[^0-9+]/g, '')}`} className="flex items-center gap-3 text-slate-600 hover:text-blue-600 transition-colors print:text-black group min-w-0">
+                    <div className="p-2 rounded-xl bg-slate-50 border border-slate-100 group-hover:bg-blue-50 group-hover:border-blue-200 transition-all no-print shrink-0">
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
                     </div>
-                    <span className="print:font-bold whitespace-nowrap">Phone: <span className="font-normal">{data.phone}</span></span>
-                  </div>
+                    <span className="print:font-bold whitespace-nowrap truncate">Phone: <span className="font-normal underline decoration-blue-200 print:no-underline">{data.phone}</span></span>
+                  </a>
 
-                  <div className="flex items-center gap-3 text-slate-600 print:text-black group">
-                    <div className="p-2 rounded-xl bg-slate-50 border border-slate-100 no-print">
+                  <a href={websiteUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-slate-600 hover:text-blue-600 transition-colors print:text-black group min-w-0">
+                    <div className="p-2 rounded-xl bg-slate-50 border border-slate-100 group-hover:bg-blue-50 group-hover:border-blue-200 transition-all no-print shrink-0">
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9h18"/></svg>
                     </div>
-                    <span className="print:font-bold">Portfolio: <span className="font-normal break-all">{data.website}</span></span>
-                  </div>
+                    <span className="print:font-bold whitespace-nowrap truncate">Portfolio: <span className="font-normal underline decoration-blue-200 print:no-underline">{data.website}</span></span>
+                  </a>
 
-                  <div className="flex items-center gap-3 text-slate-600 print:text-black group">
-                    <div className="p-2 rounded-xl bg-slate-50 border border-slate-100 no-print">
+                  <a href={mapsUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-slate-600 hover:text-blue-600 transition-colors print:text-black group min-w-0">
+                    <div className="p-2 rounded-xl bg-slate-50 border border-slate-100 group-hover:bg-blue-50 group-hover:border-blue-200 transition-all no-print shrink-0">
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
                     </div>
-                    <span className="print:font-bold">Address: <span className="font-normal">{data.location}</span></span>
-                  </div>
+                    <span className="print:font-bold whitespace-nowrap truncate">Address: <span className="font-normal underline decoration-blue-200 print:no-underline">{data.location}</span></span>
+                  </a>
                 </div>
               </div>
             </div>
@@ -133,7 +142,7 @@ export const ResumeView: React.FC<ResumeViewProps> = ({ data }) => {
           </section>
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 print:gap-8">
-            {/* Left Column: Experience & Education */}
+            {/* Left Column */}
             <div className="lg:col-span-7 space-y-12 print:space-y-6">
               <section className="reveal">
                 <div className="flex items-center gap-4 mb-6 print:mb-3">
@@ -184,7 +193,7 @@ export const ResumeView: React.FC<ResumeViewProps> = ({ data }) => {
               </section>
             </div>
 
-            {/* Right Column: Skills & Certs */}
+            {/* Right Column */}
             <div className="lg:col-span-5 space-y-12 print:space-y-6">
               <section className="reveal">
                 <div className="flex items-center gap-4 mb-6 print:mb-3">
@@ -210,7 +219,6 @@ export const ResumeView: React.FC<ResumeViewProps> = ({ data }) => {
               <section className="reveal">
                 <div className="flex items-center justify-between gap-4 mb-6 print:mb-3">
                   <h2 className="text-xl font-black text-slate-900 uppercase tracking-tighter print:text-base">Certifications</h2>
-                  {/* HIDDEN IN PRINT */}
                   <div className="flex gap-1 no-print">
                     {(['All', 'Oracle', 'IT'] as const).map(filter => (
                       <button 
@@ -224,7 +232,6 @@ export const ResumeView: React.FC<ResumeViewProps> = ({ data }) => {
                   </div>
                 </div>
                 
-                {/* Responsive Certs List (Interactive on web, flat on print) */}
                 <div className="space-y-4 max-h-[500px] overflow-y-auto pr-2 custom-scrollbar no-print">
                   {filteredCerts.map((cert, idx) => (
                     <div key={idx} className="p-4 rounded-xl bg-white border border-slate-100 hover:border-blue-100 hover:shadow-lg transition-all">
@@ -234,7 +241,6 @@ export const ResumeView: React.FC<ResumeViewProps> = ({ data }) => {
                   ))}
                 </div>
 
-                {/* Print Only Certs Layout */}
                 <div className="hidden print:block space-y-2">
                   {data.certifications.map((cert, idx) => (
                     <div key={idx} className="border-l-2 border-blue-600 pl-3 py-1">
@@ -247,27 +253,44 @@ export const ResumeView: React.FC<ResumeViewProps> = ({ data }) => {
             </div>
           </div>
 
-          {/* References - Simplified for Print */}
+          {/* Professional References with Interactive Toggle */}
           <section className="reveal mt-16 pt-10 border-t border-slate-100 print:mt-10 print:pt-4">
             <h2 className="text-xl font-black text-slate-900 uppercase tracking-tighter text-center w-full mb-8 print:mb-4 print:text-left print:text-base">Professional References</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 print:grid-cols-2 print:gap-2">
-              {data.references.map((ref, idx) => (
-                <div key={idx} className="p-6 rounded-2xl bg-slate-50 border border-slate-100 print:bg-transparent print:border-none print:p-0">
-                   <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center font-black text-base shadow-md no-print">
-                        {ref.name.charAt(0)}
-                      </div>
-                      <div>
-                        <p className="font-black text-slate-900 text-base print:text-xs">{ref.name}</p>
-                        <p className="text-slate-500 text-[10px] font-bold uppercase tracking-widest print:text-[9px] print:text-slate-800">{ref.position}</p>
-                        <div className="mt-1 flex flex-col gap-0.5 print:mt-0.5">
-                          <p className="text-xs text-blue-600 font-bold print:text-[9px] print:text-black"><span className="print:font-bold">Tel: </span>{ref.phone}</p>
-                          <p className="text-xs text-blue-600 font-bold print:text-[9px] print:text-black"><span className="print:font-bold">Email: </span>{ref.email}</p>
+              {data.references.map((ref, idx) => {
+                const isVisible = visibleReferences.has(idx);
+                return (
+                  <div key={idx} className="p-6 rounded-2xl bg-slate-50 border border-slate-100 print:bg-transparent print:border-none print:p-0">
+                     <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center font-black text-base shadow-md no-print">
+                          {ref.name.charAt(0)}
                         </div>
-                      </div>
-                   </div>
-                </div>
-              ))}
+                        <div className="flex-1 min-w-0">
+                          <p className="font-black text-slate-900 text-base print:text-xs truncate">{ref.name}</p>
+                          <p className="text-slate-500 text-[10px] font-bold uppercase tracking-widest print:text-[9px] print:text-slate-800 truncate">{ref.position}</p>
+                          
+                          {/* Toggle Button for Web */}
+                          <button 
+                            onClick={() => toggleReference(idx)}
+                            className="mt-2 text-[10px] font-black text-blue-600 hover:text-blue-800 transition-colors uppercase tracking-widest no-print"
+                          >
+                            {isVisible ? 'Hide Details' : 'Show Contact Details'}
+                          </button>
+
+                          {/* Contact Info (Toggled on web, always visible in print) */}
+                          <div className={`mt-2 flex flex-col gap-1 transition-all duration-300 overflow-hidden ${isVisible ? 'max-h-20 opacity-100' : 'max-h-0 opacity-0'} print:max-h-none print:opacity-100 print:mt-0.5`}>
+                            <a href={`tel:${ref.phone.replace(/[^0-9+]/g, '')}`} className="text-xs text-blue-600 font-bold hover:underline print:text-[9px] print:text-black print:no-underline whitespace-nowrap">
+                              <span className="print:font-bold">Tel: </span>{ref.phone}
+                            </a>
+                            <a href={`mailto:${ref.email}`} className="text-xs text-blue-600 font-bold hover:underline print:text-[9px] print:text-black print:no-underline whitespace-nowrap">
+                              <span className="print:font-bold">Email: </span>{ref.email}
+                            </a>
+                          </div>
+                        </div>
+                     </div>
+                  </div>
+                );
+              })}
             </div>
           </section>
         </div>

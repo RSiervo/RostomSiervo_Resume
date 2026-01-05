@@ -4,7 +4,7 @@ import { ResumeData } from './types';
 export const MOCK_RESUME: ResumeData = {
   name: "ROSTOM A. SIERVO",
   title: "Information Technology / Web Developer",
-  profilePicture: "https://images.unsplash.com/photo-1633332755192-727a05c4013d?q=80&w=250&h=250&auto=format&fit=crop",
+  profilePicture: "/profile.jpg",
   email: "rostomdevdotnet@gmail.com",
   phone: "+6393-0070-3129",
   location: "Commonwealth Quezon City, 1121",

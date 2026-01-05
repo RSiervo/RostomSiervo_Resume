@@ -9,7 +9,7 @@ export const MOCK_RESUME: ResumeData = {
   phone: "+6393-0070-3129",
   location: "Commonwealth Quezon City, 1121",
   website: "rostomdevdotnet-portfolio.vercel.app",
-  summary: "A highly motivated and detail-oriented Information Technology graduate (Cum Laude) major in Programming, with strong passion for Networking and Computer Troubleshooting. Seeking a challenging position where I can apply my skills in hardware and software support, network configuration, DNS and Active Directory management, and contribute to maintaining efficient IT systems while continuously developing my technical expertise and professional growth.",
+  summary: "A highly motivated and detail-oriented Information Technology graduate (Cum Laude) major in Programming, with strong passion for Networking and Computer Troubleshooting. Seeking a challenging position where I can apply my skills in hardware and software support, network configuration, DNS and Active Directory management, and contribute to maintaining efficient IT systems while continuously developing his technical expertise and professional growth.",
   experiences: [
     {
       company: "Total Information Management Corporation",
@@ -30,7 +30,7 @@ export const MOCK_RESUME: ResumeData = {
       period: "2024",
       location: "University of Eastern Philippines",
       description: [
-        "Provided technical assistance and network support within the university’s Management Information System department.",
+        "Provided technical assistance and network support within the university’s Management Information System department to ensure smooth IT operations.",
         "Assisted in diagnosing and resolving hardware and software issues for staff and faculty.",
         "Supported network maintenance, configuration, and troubleshooting of connectivity issues.",
         "Helped manage user accounts, passwords, and permissions through Active Directory."
@@ -58,6 +58,16 @@ export const MOCK_RESUME: ResumeData = {
       school: "PAMBUJAN NATIONAL HIGH SCHOOL",
       degree: "SHS: TVL-ICT - With Honor",
       period: "2018 – 2020"
+    },
+    {
+      school: "BALNASAN NATIONAL HIGH SCHOOL",
+      degree: "JSH: With Honor",
+      period: "2014 – 2018"
+    },
+    {
+      school: "SAN RAMON ELEMENTARY SCHOOL",
+      degree: "Salutatorian of class 2014",
+      period: "2006 – 2014"
     }
   ],
   skills: [
@@ -128,6 +138,7 @@ ${JSON.stringify(resume, null, 2)}
 
 KEY STRENGTHS TO HIGHLIGHT:
 - Cum Laude graduate with a major in Programming.
+- Salutatorian of his elementary class.
 - Multiple Oracle Cloud Infrastructure (OCI) Professional Certifications (DevOps, Networking, Developer).
 - TESDA CSS NC II Certified.
 - Practical experience in Technical Support, Network Configuration, and Active Directory.
@@ -135,6 +146,6 @@ KEY STRENGTHS TO HIGHLIGHT:
 GUIDELINES:
 1. Be professional, technical, and helpful.
 2. Only provide information that is in the resume.
-3. If asked about his performance, mention his academic honors (Cum Laude, With Honor).
+3. If asked about his performance, mention his academic honors (Cum Laude, With Honor, Salutatorian).
 4. If a question is not covered, politely guide them to contact ${resume.name} at ${resume.email}.
 `;

@@ -36,6 +36,34 @@
       width: 100% !important;
     }
 
+    /* Custom Scrollbar for Desktop */
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 5px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 10px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+
+    /* Remove scrollbars on mobile view */
+    @media (max-width: 768px) {
+      /* Hide scrollbar for Chrome, Safari and Opera */
+      ::-webkit-scrollbar {
+        display: none !important;
+      }
+      /* Hide scrollbar for IE, Edge and Firefox */
+      html, body, .custom-scrollbar, div {
+        -ms-overflow-style: none !important;  /* IE and Edge */
+        scrollbar-width: none !important;  /* Firefox */
+      }
+    }
+
     /* Print Optimization */
     @media print {
       @page {
@@ -93,7 +121,6 @@
   }
 }
 </script>
-<link rel="stylesheet" href="/index.css">
 </head>
 <body>
   <div id="root"></div>
